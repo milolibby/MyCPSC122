@@ -1,0 +1,28 @@
+Sacramento, CA
+
+1028000
+Eureka, CA
+4
+
+310603
+Medford, OR
+1
+
+267151
+Eugene, OR
+1
+
+177028
+Portland, OR
+1
+
+231746
+Tacoma, WA
+1
+
+64373.8
+Seattle, WA
+2
+
+449007
+Spokane, WA
