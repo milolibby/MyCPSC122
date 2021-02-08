@@ -1,0 +1,5 @@
+1. /home/mthomas/Desktop
+2.cd class_stuff
+3. mkdir work
+4.touch foo
+5.cp foo work

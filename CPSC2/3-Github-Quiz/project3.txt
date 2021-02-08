@@ -1,0 +1,5 @@
+1.git init
+2.clone
+3.CPSC122
+4.git pull
+5.Github is an online git repository host service
