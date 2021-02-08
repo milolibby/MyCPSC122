@@ -1,0 +1,11 @@
+Bob Smith
+Walmart
+2100
+
+Jane Doe
+Safeway
+1950
+
+John Anyone
+Walmart
+2000

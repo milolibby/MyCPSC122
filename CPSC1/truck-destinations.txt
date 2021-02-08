@@ -1,0 +1,7 @@
+Truck Drop-offs Report
+Walmart
+Safeway
+Walmart
+
+Number of Trucks: 3
+Average dropoff time: 2016
