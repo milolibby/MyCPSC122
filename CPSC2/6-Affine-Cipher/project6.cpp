@@ -21,8 +21,6 @@ char encrypt (char ch, int alpha, int beta);
 char decrypt (char ch, int alpha, int beta, int MI[]);
 void fileControl (string keyFile, string fileIn, string fileOut, int mode);
 void keyGen (string keyFile);
-void encryptFile();
-void decryptFile();
 
 const int MULTIPLIER = 25;
 
@@ -30,29 +28,14 @@ const int MULTIPLIER = 25;
 int main(int argc, char* argv[])
 {	
 
- keyGen("keyFile");
- encryptFile();
- decryptFile();
-
- 
-/*
- ch = encrypt('Z', 17, 12);
- cout << ch << endl;
- cout << ((25 * 3 + 7) % 26) << endl;
- ch = decrypt('V', 17, 12, MI);
- cout << ch << endl;
-*/ 
-
-/*int mode = -1;
+ int mode = -1;
  mode = atoi(argv[1]); // 0 = generate key 1 = encrypt 2 = decrypt
 
  if (mode == 0)
-  generateKey(argv);
- if (mode == 1)
-  encryptFile(argv);
- if (mode == 2)
-  decryptFile(argv);
-*/
+  keyGen(argv[2]);
+ if (mode == 1 || mode == 2)
+  fileControl(argv[2], argv[3], argv[4], mode);
+
 }
 
 
@@ -91,9 +74,52 @@ Output: writes to the output file
 */
 void fileControl (string keyFile, string fileIn, string fileOut, int mode)
 {
+ fstream fin;
+ fstream fout;
+ int alpha, beta;
+ int MI[26];
+ char ch;
 
+ fileOpen(fin, "keyFile", 'r'); //Key File
+ fin >> alpha;
+ fin >> beta;
+ fin.close();
 
+ fileOpen(fin, fileIn, 'r'); //Plain Text File
+ fileOpen(fout, fileOut, 'w'); //Cipher Text File
 
+ if (mode == 1) //encrypt
+ {		
+  while (fin.peek() != EOF)
+  {
+   ch = fin.get();
+   if (isalpha(ch))
+   {
+    ch = toupper(ch);
+    ch = encrypt(ch, alpha, beta);
+   }
+    fout.put(ch);
+  }
+ }
+ 
+ if (mode == 2) //decrypt
+ {
+  fillMIArray(MI);	
+ 
+  while (fin.peek() != EOF)
+  {
+   ch = fin.get();
+   if (isalpha(ch))
+   {
+    ch = toupper(ch);
+    ch = decrypt(ch, alpha, beta, MI);
+   }
+  fout.put(ch);
+  }  
+ }
+ 
+ fin.close();
+ fout.close();
 }
 
 char encrypt (char ch, int alpha, int beta)
@@ -174,69 +200,6 @@ void keyGen (string keyFile)
  fout.close();
 }
 
-void encryptFile()
-{
- fstream fin;
- fstream fout;
- int alpha, beta;
- char ch;
- string text;
-	
- fileOpen(fin, "keyFile", 'r'); //Key File
- fin >> alpha;
- fin >> beta;
- fin.close();
-		
- fileOpen(fin, "inFile", 'r'); //Plain Text File
- fileOpen(fout, "outFile", 'w'); //Cipher Text File
-		
- while (fin.peek() != EOF)
-  {
-   ch = fin.get();
-   if (isalpha(ch))
-    {
-     ch = toupper(ch);
-	 ch = encrypt(ch, alpha, beta);
-    }
-    fout.put(ch);
-  }
 
- fin.close();
- fout.close();
-}
-
-void decryptFile()
-{
- fstream fin;
- fstream fout;
- int alpha, beta;
- char ch;
- string text;
- int MI[26];
-
- fillMIArray(MI);	
-
- fileOpen(fin, "keyFile", 'r'); //Key File
- fin >> alpha;
- fin >> beta;
- fin.close();
-		
- fileOpen(fin, "outFile", 'r'); //Plain Text File
- fileOpen(fout, "inFile2", 'w'); //Cipher Text File
-		
- while (fin.peek() != EOF)
-  {
-   ch = fin.get();
-   if (isalpha(ch))
-    {
-     ch = toupper(ch);
-	 ch = decrypt(ch, alpha, beta, MI);
-    }
-    fout.put(ch);
-  }
-
- fin.close();
- fout.close();
-}
 
 
