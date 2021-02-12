@@ -80,7 +80,7 @@ void fileControl (string keyFile, string fileIn, string fileOut, int mode)
  int MI[26];
  char ch;
 
- fileOpen(fin, "keyFile", 'r'); //Key File
+ fileOpen(fin, keyFile, 'r'); //Key File
  fin >> alpha;
  fin >> beta;
  fin.close();
@@ -146,27 +146,10 @@ void fillMIArray(int MI[])
  ifstream fin;
  fin.open("dictInv.txt");
 
-
-
  int idx = 0;
 
  while(fin >> MI[idx++]);
  fin.close();
- 
-
- /*int i;
- for (i = 0; i < 26; i++) //initialize array to zeros 
-  MI[i] = 0;
- 
- MI[1] = 1;
- MI[3] = 9;
- MI[5] = 21;
- MI[7] = 15;
- MI[11] = 19;
- MI[17] = 23;
- MI[19] = 11;
- MI[25] = 25;
- */	
 }
 
 /*
@@ -181,9 +164,10 @@ void keyGen (string keyFile)
  int beta;
  int MI[26];
  int i;
- ofstream fout;
+ fstream fout;
  srand(time(0));
  
+ fileOpen(fout, keyFile, 'w');
  fillMIArray(MI);
  
  beta = (rand() % 25) + 1; // [1...25]
@@ -194,7 +178,6 @@ void keyGen (string keyFile)
   alpha = MI[i];
  }
  
- fout.open("keyFile");
  fout << alpha << endl;
  fout << beta << endl;
  fout.close();
