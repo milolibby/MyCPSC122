@@ -146,8 +146,6 @@ void fillMIArray(int MI[])
  ifstream fin;
  fin.open("dictInv.txt");
 
-
-
  int idx = 0;
 
  while(fin >> MI[idx++]);
