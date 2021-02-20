@@ -1,9 +1,9 @@
 /*
  Name: Milo Libby
  Class: CPSC 122, Section 2
- Date Submitted: Feb 8, 2021
- Assignment: Project 5                                                                    
- Description: This program uses the Caeser cipher to
+ Date Submitted: Feb 15, 2021
+ Assignment: Project 7                                                                    
+ Description: This program uses the transpositon cipher to
 encrypt/decrypt a file
  Notes: None
 */
@@ -22,13 +22,17 @@ void selection_sort(int arr[][2]);
 void swap(int pos, int idx_small, int arr[][2]);
 int find_small(int start, int arr[][2]);
 
-const int SIZE = 4;
+const int SIZE = 26;
 
 int main(int argc, char* argv[])
 {
+ int mode = -1;
+ mode = atoi(argv[1]); // 0 = generate key 1 = encrypt 2 = decrypt
 
- keyGen("keyFile");
- //fileControl ("keyFile", "inFile", "outFile", 0);
+ if (mode == 0)
+  keyGen(argv[2]);
+ if (mode == 1 || mode == 2)
+  fileControl(argv[2], argv[3], argv[4], mode);
 
  return 0;
 }
@@ -119,24 +123,24 @@ void fileControl (string keyFile, string fileIn, string fileOut, int mode)
 {
  fstream fin;
  fstream fout;
- int incKey[SIZE];
- int decKey[SIZE][2];
+ int encKey[SIZE];
+ int decKey[SIZE];
  char ch;
  int i = 0;
  
 
  fileOpen(fin, keyFile, 'r'); //Key File
+ for (i = 0; i < SIZE; i++) //read encKey
+  fin >> encKey[i];
+
  for (i = 0; i < SIZE; i++)
-  fin >> incKey[i];
+  fin >> decKey[i]; //read decKey
+ 
  fin.close();
  
  fileOpen(fin, fileIn, 'r'); //Plain Text File
  fileOpen(fout, fileOut, 'w'); //Cipher Text File
  
- for (i = 0; i < SIZE; i++) //remove
-  cout << incKey[i] << endl;
- 
- //if (mode == 1) //encrypt
  {		
   while (fin.peek() != EOF)
   {
@@ -144,7 +148,10 @@ void fileControl (string keyFile, string fileIn, string fileOut, int mode)
    if (isalpha(ch))
    {
     ch = toupper(ch);
-    ch = transform(ch, incKey);
+    if (mode == 1) //encrypt
+     ch = transform(ch, encKey);
+    if (mode == 2) //decrypt
+     ch = transform(ch, decKey);
    }
     fout.put(ch);
   }
@@ -174,7 +181,6 @@ char transform(char ch, int encDec[])
    break;
  }
  ch = encDec[i] + 'A';
- cout << ch << endl;
  
  return ch;
 }
