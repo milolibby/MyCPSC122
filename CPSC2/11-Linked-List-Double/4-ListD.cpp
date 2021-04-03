@@ -4,46 +4,48 @@ using namespace std;
 
 #include "4-ListD.h"
 
-   
-ListD::ListD()
+
+template <typename D>   
+ListD<D>::ListD()
 {
  length = 0;
  
 //create dummy nodes;
- head = new doubleNode;
- tail = new doubleNode;
+ head = new doubleNode<D>;
+ tail = new doubleNode<D>;
 
  //set values for head dummy node;
  head->prev = NULL;
- head->item = INT_MIN;
+ head->item = -1;
  head->next = tail;
 
  //set values for tail dummy node;
  tail->prev = head; 
- tail->item = INT_MAX;
+ tail->item = -10;
  tail->next = NULL;
 }
 
-ListD::ListD(ListD* lst)
+template <typename D>   
+ListD<D>::ListD(ListD* lst)
 {
  length = 0; 
  
 //create dummy nodes;
- head = new doubleNode;
- tail = new doubleNode;
+ head = new doubleNode<D>;
+ tail = new doubleNode<D>;
 
  //set values for head dummy node;
  head->prev = NULL;
- head->item = INT_MIN;
+ head->item = -1;
  head->next = tail;
 
  //set values for tail dummy node;
  tail->prev = head; 
- tail->item = INT_MAX;
+ tail->item = -10;
  tail->next = NULL;
 
  //returns pointer to the first node, which is what we want here
- doubleNode* cur = lst->FindPosition(2);
+ doubleNode<D>* cur = lst->FindPosition(2);
  for (int i = 1; i <= lst->length; i++)
  {
   Insert(cur->item,i);
@@ -51,11 +53,12 @@ ListD::ListD(ListD* lst)
  }
 }
 
-ListD::~ListD()
+template <typename D>   
+ListD<D>::~ListD()
 {
  while (head->next != tail)
  {
-  doubleNode* temp = head->next;
+  doubleNode<D>* temp = head->next;
   temp->next->prev = head;
   head->next = temp->next;
   delete temp;
@@ -66,11 +69,12 @@ ListD::~ListD()
  
 }
 
-doubleNode* ListD::FindPosition(int pos)
+template <typename D>
+doubleNode<D>* ListD<D>::FindPosition(int pos)
 {
  //Inserting at the tail is a special case.  It can be made much more efficient than
  //this.
- doubleNode* cur = head;
+ doubleNode<D>* cur = head;
  int i = 0;  //begin at the dummy node
  while (i < pos - 1)
  {
@@ -79,15 +83,16 @@ doubleNode* ListD::FindPosition(int pos)
  }
  return cur;
 } 
-  
-void ListD::Insert(itemType item, int pos)
+
+template <typename D> 
+void ListD<D>::Insert(D item, int pos)
 {
  //new node goes between these two nodes
- doubleNode* insertPtA = FindPosition(pos);  
- doubleNode* insertPtB = insertPtA->next; 
+ doubleNode<D>* insertPtA = FindPosition(pos);  
+ doubleNode<D>* insertPtB = insertPtA->next; 
 
  //create new node and set its values
- doubleNode* tmp = new doubleNode; 
+ doubleNode<D>* tmp = new doubleNode<D>; 
  tmp->prev = insertPtA;
  tmp->item = item;
  tmp->next = insertPtB;
@@ -99,9 +104,10 @@ void ListD::Insert(itemType item, int pos)
  length++;
 }
 
-void ListD::PrintForward()
+template <typename D> 
+void ListD<D>::PrintForward()
 {
- doubleNode* cur = head->next;
+ doubleNode<D>* cur = head->next;
 
  int i = 0;
  while (i < length)
@@ -112,9 +118,10 @@ void ListD::PrintForward()
  }
 }
 
-void ListD::PrintBackward()
+template <typename D> 
+void ListD<D>::PrintBackward()
 {
- doubleNode* cur = tail->prev;
+ doubleNode<D>* cur = tail->prev;
  
  int i = 0;
  while (i < length)
@@ -125,9 +132,12 @@ void ListD::PrintBackward()
  } 
 }
 
-void ListD::Delete(int pos)
+
+
+template <typename D>   
+void ListD<D>::Delete(int pos)
 {
- doubleNode* temp = FindPosition(pos+1);
+ doubleNode<D>* temp = FindPosition(pos+1);
  temp->prev->next = temp->next;
  temp->next->prev = temp->prev;
  length--;
@@ -135,10 +145,11 @@ void ListD::Delete(int pos)
  delete temp;
 }
 
-int ListD::DeleteAll(itemType item)
+template <typename D>   
+int ListD<D>::DeleteAll(D item)
 {
- doubleNode* cur = head;
- doubleNode* temp = head;
+ doubleNode<D>* cur = head;
+ doubleNode<D>* temp = head;
  int ct = 0;
  
  while (cur->next != tail)
@@ -157,11 +168,12 @@ int ListD::DeleteAll(itemType item)
  return ct;
 }
 
-void ListD::Sort()
+template <typename D>   
+void ListD<D>::Sort()
 {
-  doubleNode* temp = head;
-  doubleNode* min;
-  doubleNode* nxt;
+  doubleNode<D>* temp = head;
+  doubleNode<D>* min;
+  doubleNode<D>* nxt;
   int i = 1;
     
     while (i < length) {
@@ -182,3 +194,4 @@ void ListD::Sort()
         min->item = x;
     }
 }
+
